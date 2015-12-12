@@ -1291,7 +1291,9 @@ void	SoftDemo::mouseMotionFunc(int x,int y)
 //
 void	SoftDemo::mouseFunc(int button, int state, int x, int y)
 {
-	return;
+	static bool gbNoMouse = false;
+	if(gbNoMouse)
+		return;
 
 	if(button==0)
 	{

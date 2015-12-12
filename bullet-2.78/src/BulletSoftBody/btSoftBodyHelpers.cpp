@@ -271,11 +271,15 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 		/* Links	*/ 
 		if(0!=(drawflags&fDrawFlags::Links))
 		{
-			for(i=0;i<psb->m_links.size();++i)
+			static bool gbDebugDrawLinks = false;
+			if(gbDebugDrawLinks)
 			{
-				const btSoftBody::Link&	l=psb->m_links[i];
-				if(0==(l.m_material->m_flags&btSoftBody::fMaterial::DebugDraw)) continue;
-				idraw->drawLine(l.m_n[0]->m_x,l.m_n[1]->m_x,lcolor);
+				for(i=0;i<psb->m_links.size();++i)
+				{
+					const btSoftBody::Link&	l=psb->m_links[i];
+					if(0==(l.m_material->m_flags&btSoftBody::fMaterial::DebugDraw)) continue;
+					idraw->drawLine(l.m_n[0]->m_x,l.m_n[1]->m_x,lcolor);
+				}
 			}
 		}
 		/* Normals	*/ 
@@ -336,11 +340,15 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 		glPushAttrib(GL_ENABLE_BIT);
 
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, gTexIdStreet);
+		glBindTexture(GL_TEXTURE_2D, gTexIdTartif1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		static btScalar	scl=(btScalar)0.8;
+		//static btScalar	scl=(btScalar)0.8;
+		static btScalar	scl=(btScalar)1.0f;
 		static btScalar	alp=(btScalar)1;
-		static btVector3	col(0,(btScalar)0.7,0);
+		//static btVector3	col(0,(btScalar)0.7,0);
+		static btVector3	col(1,1,1);
 
 		btVector3	vCenter(0.0f, 0.0f, 0.0f);
 		{
@@ -384,8 +392,15 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 				glBegin(GL_TRIANGLES);		
 				glColor4f(color.getX(), color.getY(), color.getZ(),alpha);
 				glNormal3d(n.getX(),n.getY(),n.getZ());
+
+				static float gfScale = 10.0f;
+				glTexCoord2f( gfScale * (pos0.getX()-vCenter.getX()), gfScale * (pos0.getZ()-vCenter.getZ()));
 				glVertex3d(pos0.getX(),pos0.getY(),pos0.getZ());
+
+				glTexCoord2f( gfScale * (pos1.getX()-vCenter.getX()), gfScale * (pos1.getZ()-vCenter.getZ()));
 				glVertex3d(pos1.getX(),pos1.getY(),pos1.getZ());
+
+				glTexCoord2f( gfScale * (pos2.getX()-vCenter.getX()), gfScale * (pos2.getZ()-vCenter.getZ()));
 				glVertex3d(pos2.getX(),pos2.getY(),pos2.getZ());
 				glEnd();
 			}
