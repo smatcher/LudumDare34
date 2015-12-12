@@ -24,7 +24,7 @@ GLDebugDrawer	gDebugDrawer;
 
 int main(int argc,char** argv)
 {
-	sndPlaySoundA("music/Tartiflu.wav", SND_LOOP|SND_ASYNC);
+	//sndPlaySoundA("music/Tartiflu.wav", SND_LOOP|SND_ASYNC);
 
 	SoftDemo* softDemo = new SoftDemo();
 
@@ -32,7 +32,7 @@ int main(int argc,char** argv)
 	softDemo->getDynamicsWorld()->setDebugDrawer(&gDebugDrawer);
 
 
-	glutmain(argc, argv,1024,768,"Bullet Physics Demo. http://bulletphysics.com",softDemo);
+	glutmain(argc, argv,1024,768,"Tartiflu",softDemo);
 
 	delete softDemo;
 	return 0;

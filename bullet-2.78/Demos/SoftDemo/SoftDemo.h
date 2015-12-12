@@ -157,36 +157,7 @@ public:\
 };
 
 
-MACRO_SOFT_DEMO(0) //Init_Cloth
 MACRO_SOFT_DEMO(1) //Init_Pressure
-MACRO_SOFT_DEMO(2)//Init_Volume
-MACRO_SOFT_DEMO(3)//Init_Ropes
-MACRO_SOFT_DEMO(4)//Init_Ropes_Attach
-MACRO_SOFT_DEMO(5)//Init_ClothAttach
-MACRO_SOFT_DEMO(6)//Init_Sticks
-MACRO_SOFT_DEMO(7)//Init_Collide
-MACRO_SOFT_DEMO(8)//Init_Collide2
-MACRO_SOFT_DEMO(9)//Init_Collide3
-MACRO_SOFT_DEMO(10)//Init_Impact
-MACRO_SOFT_DEMO(11)//Init_Aero
-MACRO_SOFT_DEMO(12)//Init_Friction
-MACRO_SOFT_DEMO(13)//Init_Torus
-MACRO_SOFT_DEMO(14)//Init_TorusMatch
-MACRO_SOFT_DEMO(15)//Init_Bunny
-MACRO_SOFT_DEMO(16)//Init_BunnyMatch
-MACRO_SOFT_DEMO(17)//Init_Cutting1
-MACRO_SOFT_DEMO(18)//Init_ClusterDeform
-MACRO_SOFT_DEMO(19)//Init_ClusterCollide1
-MACRO_SOFT_DEMO(20)//Init_ClusterCollide2
-MACRO_SOFT_DEMO(21)//Init_ClusterSocket
-MACRO_SOFT_DEMO(22)//Init_ClusterHinge
-MACRO_SOFT_DEMO(23)//Init_ClusterCombine
-MACRO_SOFT_DEMO(24)//Init_ClusterCar
-MACRO_SOFT_DEMO(25)//Init_ClusterRobot
-MACRO_SOFT_DEMO(26)//Init_ClusterStackSoft
-MACRO_SOFT_DEMO(27)//Init_ClusterStackMixed
-MACRO_SOFT_DEMO(28)//Init_TetraCube
-MACRO_SOFT_DEMO(29)//Init_TetraBunny
 
 
 #endif //CCD_PHYSICS_DEMO_H
