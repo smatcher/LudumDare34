@@ -36,6 +36,8 @@ subject to the following restrictions:
 #include "GLDebugFont.h"
 #include "GlutStuff.h"
 
+#include "tgaloader.h"
+
 extern float eye[3];
 extern int glutScreenWidth;
 extern int glutScreenHeight;
@@ -66,6 +68,10 @@ const int maxNumObjects = 32760;
 
 #define CUBE_HALF_EXTENTS 1.5
 #define EXTRA_HEIGHT -10.f
+
+GLuint	gTexIdStreet	= 0;
+GLuint	gTexIdTartif1	= 0;
+GLuint	gTexIdTartif2	= 0;
 
 //
 void SoftDemo::createStack( btCollisionShape* boxShape, float halfCubeSize, int size, float zPos )
@@ -1518,7 +1524,49 @@ void	SoftDemo::exitPhysics()
 }
 
 
+void SoftDemo::myinit()
+{
+//	PlatformDemoApplication::myinit();
 
+	GLfloat light_ambient[] = { btScalar(0.2), btScalar(0.2), btScalar(0.2), btScalar(1.0) };
+	GLfloat light_diffuse[] = { btScalar(1.0), btScalar(1.0), btScalar(1.0), btScalar(1.0) };
+	GLfloat light_specular[] = { btScalar(1.0), btScalar(1.0), btScalar(1.0), btScalar(1.0 )};
+	/*	light_position is NOT default value	*/
+	GLfloat light_position0[] = { btScalar(1.0), btScalar(10.0), btScalar(1.0), btScalar(0.0 )};
+	GLfloat light_position1[] = { btScalar(-1.0), btScalar(-10.0), btScalar(-1.0), btScalar(0.0) };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
+
+	glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+
+
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
+	glClearColor(btScalar(0.7),btScalar(0.7),btScalar(0.7),btScalar(0));
+
+	if(!m_bGraphicsInit)
+	{
+		m_bGraphicsInit	= true;
+		// -------------
+		// Load textures
+		TGALoader	loader;
+		loader.loadOpenGLTexture("textures/street.tga", &gTexIdStreet, TGA_BILINEAR);
+		loader.loadOpenGLTexture("textures/tartif1.tga", &gTexIdTartif1, TGA_BILINEAR);
+		loader.loadOpenGLTexture("textures/tartif2.tga", &gTexIdTartif2, TGA_BILINEAR);
+	}
+}
 
 
 

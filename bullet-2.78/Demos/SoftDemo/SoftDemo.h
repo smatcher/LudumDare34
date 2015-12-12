@@ -86,12 +86,15 @@ public:
 
 	btDefaultCollisionConfiguration* m_collisionConfiguration;
 
+	bool					m_bGraphicsInit = false;
 
 public:
 
 	void	initPhysics();
 
 	void	exitPhysics();
+
+	virtual void	myinit() override;
 
 	SoftDemo() : m_drag(false)
 	{

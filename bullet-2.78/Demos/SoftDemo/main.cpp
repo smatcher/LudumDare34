@@ -31,7 +31,6 @@ int main(int argc,char** argv)
 	softDemo->initPhysics();
 	softDemo->getDynamicsWorld()->setDebugDrawer(&gDebugDrawer);
 
-
 	glutmain(argc, argv,1024,768,"Tartiflu",softDemo);
 
 	delete softDemo;

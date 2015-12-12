@@ -21,6 +21,8 @@ subject to the following restrictions:
 #include "LinearMath/btConvexHull.h"
 #include "LinearMath/btConvexHullComputer.h"
 
+#include "windows.h"
+#include "GL/gl.h"
 
 //
 static void				drawVertex(	btIDebugDraw* idraw,
@@ -309,20 +311,88 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 		/* Faces	*/ 
 	if(0!=(drawflags&fDrawFlags::Faces))
 	{
-		const btScalar	scl=(btScalar)0.8;
-		const btScalar	alp=(btScalar)1;
-		const btVector3	col(0,(btScalar)0.7,0);
+		// BEGIN OLD CODE
+	//	const btScalar	scl=(btScalar)0.8;
+	//	const btScalar	alp=(btScalar)1;
+	//	const btVector3	col(0,(btScalar)0.7,0);
+	//	for(i=0;i<psb->m_faces.size();++i)
+	//	{
+	//		const btSoftBody::Face&	f=psb->m_faces[i];
+	//		if(0==(f.m_material->m_flags&btSoftBody::fMaterial::DebugDraw)) continue;
+	//		const btVector3			x[]={f.m_n[0]->m_x,f.m_n[1]->m_x,f.m_n[2]->m_x};
+	//		const btVector3			c=(x[0]+x[1]+x[2])/3;
+	//		idraw->drawTriangle((x[0]-c)*scl+c,
+	//			(x[1]-c)*scl+c,
+	//			(x[2]-c)*scl+c,
+	//			col,alp);
+	//	}
+		// END OLD CODE
+
+		// BEGIN NEW CODE
+		extern GLuint gTexIdStreet;
+		extern GLuint gTexIdTartif1;
+		extern GLuint gTexIdTartif2;
+
+		glPushAttrib(GL_ENABLE_BIT);
+
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, gTexIdStreet);
+
+		static btScalar	scl=(btScalar)0.8;
+		static btScalar	alp=(btScalar)1;
+		static btVector3	col(0,(btScalar)0.7,0);
+
+		btVector3	vCenter(0.0f, 0.0f, 0.0f);
+		{
+			int			nbPoints = 0;
+			for(i=0;i<psb->m_faces.size();++i)
+			{
+				const btSoftBody::Face&	f=psb->m_faces[i];
+				if(0==(f.m_material->m_flags&btSoftBody::fMaterial::DebugDraw)) continue;
+				const btVector3			x[]={f.m_n[0]->m_x,f.m_n[1]->m_x,f.m_n[2]->m_x};
+				const btVector3			c=(x[0]+x[1]+x[2])/3;
+
+				const btVector3 pos0	= (x[0]-c)*scl+c;
+				const btVector3 pos1	= (x[1]-c)*scl+c;
+				const btVector3 pos2	= (x[2]-c)*scl+c;
+			
+				vCenter	+= (pos0+pos1+pos2);
+				nbPoints += 3;
+			}
+			vCenter /= (float)nbPoints;
+		}
+
 		for(i=0;i<psb->m_faces.size();++i)
 		{
 			const btSoftBody::Face&	f=psb->m_faces[i];
 			if(0==(f.m_material->m_flags&btSoftBody::fMaterial::DebugDraw)) continue;
 			const btVector3			x[]={f.m_n[0]->m_x,f.m_n[1]->m_x,f.m_n[2]->m_x};
 			const btVector3			c=(x[0]+x[1]+x[2])/3;
-			idraw->drawTriangle((x[0]-c)*scl+c,
-				(x[1]-c)*scl+c,
-				(x[2]-c)*scl+c,
-				col,alp);
-		}	
+
+			//idraw->drawTriangle((x[0]-c)*scl+c,
+			//	(x[1]-c)*scl+c,
+			//	(x[2]-c)*scl+c,
+			//	col,alp);
+
+			const btVector3 pos0	= (x[0]-c)*scl+c;
+			const btVector3 pos1	= (x[1]-c)*scl+c;
+			const btVector3 pos2	= (x[2]-c)*scl+c;
+			const btVector3 color	= col;
+			btScalar		alpha	= alp;
+			{
+				const btVector3	n=btCross(pos1-pos0,pos2-pos0).normalized();
+				glBegin(GL_TRIANGLES);		
+				glColor4f(color.getX(), color.getY(), color.getZ(),alpha);
+				glNormal3d(n.getX(),n.getY(),n.getZ());
+				glVertex3d(pos0.getX(),pos0.getY(),pos0.getZ());
+				glVertex3d(pos1.getX(),pos1.getY(),pos1.getZ());
+				glVertex3d(pos2.getX(),pos2.getY(),pos2.getZ());
+				glEnd();
+			}
+		}
+
+		glPopAttrib();
+		// END NEW CODE
 	}
 	/* Tetras	*/ 
 	if(0!=(drawflags&fDrawFlags::Tetras))

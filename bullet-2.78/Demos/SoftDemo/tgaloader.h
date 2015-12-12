@@ -5,9 +5,9 @@
 #define TGA_LOADER_H
 
 // Configuration:
-#define TGA_LOADER_INCLUDE_GLEW	// Define this if the project uses GLEW,
+//#define TGA_LOADER_INCLUDE_GLEW	// Define this if the project uses GLEW,
 								// for including GL/glew.h before GL/gl.h
-//#define TGA_OPENGL_SUPPORT
+#define TGA_OPENGL_SUPPORT
 //#define TGA_USE_LOG_H	// Define this to use log/Log.h for logging (logError(), etc)
 #define TGA_USE_LOG_IOSTREAM	// Define this to use std::cout/std::cerr for logging
 
