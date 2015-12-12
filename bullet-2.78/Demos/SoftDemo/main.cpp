@@ -17,11 +17,14 @@ subject to the following restrictions:
 #include "GlutStuff.h"
 #include "GLDebugDrawer.h"
 #include "btBulletDynamicsCommon.h"
+#include "windows.h"
 
 GLDebugDrawer	gDebugDrawer;
 
+
 int main(int argc,char** argv)
 {
+	sndPlaySoundA("music/Tartiflu.wav", SND_LOOP|SND_ASYNC);
 
 	SoftDemo* softDemo = new SoftDemo();
 
