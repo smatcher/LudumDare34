@@ -340,7 +340,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	psb->m_materials[0]->m_kLST	=	0.1;
 	psb->m_cfg.kDF				=	1;
 	psb->m_cfg.kDP				=	0.001; // fun factor...
-	psb->m_cfg.kPR = 2500;
+	psb->m_cfg.kPR				=	2500;
 	psb->setTotalMass(30,true);
 	pdemo->getSoftDynamicsWorld()->addSoftBody(psb);
 
@@ -348,6 +348,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	//Ctor_LinearStair(pdemo,btVector3(0,0,0),btVector3(2,1,5),0,10);
 	pdemo->m_autocam=true;
 
+	pdemo->m_tartiflette = psb;
 }
 
 //
@@ -978,6 +979,9 @@ void SoftDemo::clientMoveAndDisplay()
 		int maxSimSubSteps = m_idle ? 1 : 4;
 		//if (m_idle)
 		//	dt = 1.0/420.f;
+
+		static float gfForceScale = 1.0f;
+		m_tartiflette->addForce(btVector3(m_left*gfForceScale, 0.0f, m_right*gfForceScale));
 
 		int numSimSteps;
 		numSimSteps = m_dynamicsWorld->stepSimulation(dt);

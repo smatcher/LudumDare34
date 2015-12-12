@@ -24,7 +24,7 @@ GLDebugDrawer	gDebugDrawer;
 
 int main(int argc,char** argv)
 {
-	sndPlaySoundA("music/Tartiflu.wav", SND_LOOP|SND_ASYNC);
+	//sndPlaySoundA("music/Tartiflu.wav", SND_LOOP|SND_ASYNC);
 
 	SoftDemo* softDemo = new SoftDemo();
 

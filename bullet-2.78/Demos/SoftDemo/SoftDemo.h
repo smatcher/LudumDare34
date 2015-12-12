@@ -73,8 +73,9 @@ public:
 	bool								m_drag;
 
 
-	bool m_left = false;
-	bool m_right = false;
+	bool								m_left = false;
+	bool								m_right = false;
+	btSoftBody*							m_tartiflette;
 
 	//keep the collision shapes, for deletion/cleanup
 	btAlignedObjectArray<btCollisionShape*>		m_collisionShapes;
@@ -152,6 +153,7 @@ public:
 	void	mouseFunc(int button, int state, int x, int y);
 	void	mouseMotionFunc(int x,int y);
 
+	friend void	Init_Pressure(SoftDemo* pdemo);
 };
 
 #define MACRO_SOFT_DEMO(a) class SoftDemo##a : public SoftDemo\
