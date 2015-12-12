@@ -27,6 +27,7 @@ subject to the following restrictions:
 #define PlatformDemoApplication GlutDemoApplication
 #endif
 #include "LinearMath/btAlignedObjectArray.h"
+#include "BulletDynamics\Dynamics\btDynamicsWorld.h"
 #include "BulletSoftBody/btSoftBody.h"
 
 
@@ -97,6 +98,9 @@ public:
 	{
 		setTexturing(true);
 		setShadows(true);
+
+		m_azi = 0.f;
+		m_ele = 60.f;
 	}
 	virtual ~SoftDemo()
 	{

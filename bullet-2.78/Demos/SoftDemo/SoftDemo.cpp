@@ -40,7 +40,7 @@ extern float eye[3];
 extern int glutScreenWidth;
 extern int glutScreenHeight;
 
-static bool sDemoMode = true;
+static bool sDemoMode = false;
 
 const int maxProxies = 32766;
 const int maxOverlap = 65535;
@@ -49,7 +49,8 @@ static btVector3*	gGroundVertices=0;
 static int*	gGroundIndices=0;
 static btBvhTriangleMeshShape* trimeshShape =0;
 static btRigidBody* staticBody = 0;
-static float waveheight = 5.f;
+//static float waveheight = 5.f;
+static float waveheight = 0.f;
 
 const float TRIANGLE_SIZE=8.f;
 unsigned	current_demo=23;
@@ -337,8 +338,8 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	psb->setTotalMass(30,true);
 	pdemo->getSoftDynamicsWorld()->addSoftBody(psb);
 
-	Ctor_BigPlate(pdemo);
-	Ctor_LinearStair(pdemo,btVector3(0,0,0),btVector3(2,1,5),0,10);
+	//Ctor_BigPlate(pdemo);
+	//Ctor_LinearStair(pdemo,btVector3(0,0,0),btVector3(2,1,5),0,10);
 	pdemo->m_autocam=true;
 
 }
