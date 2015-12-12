@@ -24,13 +24,16 @@ IF (USE_GLUT)
 		ADD_EXECUTABLE(AppSoftBodyDemo
 			main.cpp
 			SoftDemo.cpp
+			tgaloader.cpp
+			tgaloader.h
 			${BULLET_PHYSICS_SOURCE_DIR}/msvc/bullet.rc
 		)
 	ELSE()
 		ADD_EXECUTABLE(AppSoftBodyDemo
 			main.cpp
 			SoftDemo.cpp
-			
+			tgaloader.cpp
+			tgaloader.h
 		)
 	ENDIF()
 
