@@ -826,9 +826,33 @@ static void	Init_TetraCube(SoftDemo* pdemo)
 //		Init_TetraBunny,
 	};
 
+void SoftDemo::specialKeyboard(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_LEFT: m_left = true; break;
+	case GLUT_KEY_RIGHT: m_right = true; break;
+	default:
+		PlatformDemoApplication::specialKeyboard(key, x, y);
+		break;
+	}
+}
+
+void SoftDemo::specialKeyboardUp(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_LEFT: m_left = false; break;
+	case GLUT_KEY_RIGHT: m_right = false; break;
+	default:
+		PlatformDemoApplication::specialKeyboardUp(key, x, y);
+		break;
+	}
+}
+
 void	SoftDemo::clientResetScene()
 {
-	m_azi = 0;
+	//m_azi = 0;
 	m_cameraDistance = 30.f;
 	m_cameraTargetPosition.setValue(0,0,0);
 
@@ -1261,6 +1285,8 @@ void	SoftDemo::mouseMotionFunc(int x,int y)
 //
 void	SoftDemo::mouseFunc(int button, int state, int x, int y)
 {
+	return;
+
 	if(button==0)
 	{
 		switch(state)
@@ -1340,7 +1366,7 @@ void	SoftDemo::initPhysics()
 	///create concave ground mesh
 
 	
-	m_azi = 0;
+	//m_azi = 0;
 
 	//reset and disable motorcontrol at the start
 	motorcontrol.goal = 0;
