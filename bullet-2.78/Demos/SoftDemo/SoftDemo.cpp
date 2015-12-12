@@ -340,7 +340,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	psb->m_materials[0]->m_kLST	=	0.1;
 	psb->m_cfg.kDF				=	1;
 	psb->m_cfg.kDP				=	0.001; // fun factor...
-	psb->m_cfg.kPR				=	2500;
+	psb->m_cfg.kPR = 2500;
 	psb->setTotalMass(30,true);
 	pdemo->getSoftDynamicsWorld()->addSoftBody(psb);
 

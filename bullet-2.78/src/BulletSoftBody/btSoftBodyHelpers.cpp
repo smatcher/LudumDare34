@@ -370,6 +370,49 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 			vCenter /= (float)nbPoints;
 		}
 
+		// Draw shadow
+		glDisable(GL_TEXTURE_2D);
+		for (i = 0; i<psb->m_faces.size(); ++i)
+		{
+			const btSoftBody::Face&	f = psb->m_faces[i];
+			if (0 == (f.m_material->m_flags&btSoftBody::fMaterial::DebugDraw)) continue;
+			const btVector3			x[] = { f.m_n[0]->m_x,f.m_n[1]->m_x,f.m_n[2]->m_x };
+			const btVector3			c = (x[0] + x[1] + x[2]) / 3;
+
+			//idraw->drawTriangle((x[0]-c)*scl+c,
+			//	(x[1]-c)*scl+c,
+			//	(x[2]-c)*scl+c,
+			//	col,alp);
+
+			btVector3 pos0 = (x[0] - c)*scl + c;
+			btVector3 pos1 = (x[1] - c)*scl + c;
+			btVector3 pos2 = (x[2] - c)*scl + c;
+			static float shadowZ = -11.9f;
+			pos0.setY(shadowZ);
+			pos1.setY(shadowZ);
+			pos2.setY(shadowZ);
+			const btVector3 color = btVector3(0.2,0.2,0.2);
+			btScalar		alpha = alp;
+			{
+				const btVector3	n = btCross(pos1 - pos0, pos2 - pos0).normalized();
+				glBegin(GL_TRIANGLES);
+				glColor4f(color.getX(), color.getY(), color.getZ(), alpha);
+				glNormal3d(n.getX(), n.getY(), n.getZ());
+
+				static float gfScale = 10.0f;
+				glTexCoord2f(gfScale * (pos0.getX() - vCenter.getX()), gfScale * (pos0.getZ() - vCenter.getZ()));
+				glVertex3d(pos0.getX(), pos0.getY(), pos0.getZ());
+
+				glTexCoord2f(gfScale * (pos1.getX() - vCenter.getX()), gfScale * (pos1.getZ() - vCenter.getZ()));
+				glVertex3d(pos1.getX(), pos1.getY(), pos1.getZ());
+
+				glTexCoord2f(gfScale * (pos2.getX() - vCenter.getX()), gfScale * (pos2.getZ() - vCenter.getZ()));
+				glVertex3d(pos2.getX(), pos2.getY(), pos2.getZ());
+				glEnd();
+			}
+		}
+
+		glEnable(GL_TEXTURE_2D);
 		for(i=0;i<psb->m_faces.size();++i)
 		{
 			const btSoftBody::Face&	f=psb->m_faces[i];
