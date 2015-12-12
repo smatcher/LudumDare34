@@ -27,6 +27,7 @@ subject to the following restrictions:
 #define PlatformDemoApplication GlutDemoApplication
 #endif
 #include "LinearMath/btAlignedObjectArray.h"
+#include "BulletDynamics\Dynamics\btDynamicsWorld.h"
 #include "BulletSoftBody/btSoftBody.h"
 
 
@@ -72,6 +73,9 @@ public:
 	bool								m_drag;
 
 
+	bool m_left = false;
+	bool m_right = false;
+
 	//keep the collision shapes, for deletion/cleanup
 	btAlignedObjectArray<btCollisionShape*>		m_collisionShapes;
 
@@ -100,6 +104,9 @@ public:
 	{
 		setTexturing(true);
 		setShadows(true);
+
+		m_azi = 45.f;
+		m_ele = 60.f;
 	}
 	virtual ~SoftDemo()
 	{
@@ -139,6 +146,8 @@ public:
 	//
 	void	clientResetScene();
 	void	renderme();
+	void	specialKeyboard(int key, int x, int y);
+	void	specialKeyboardUp(int key, int x, int y);
 	void	keyboardCallback(unsigned char key, int x, int y);
 	void	mouseFunc(int button, int state, int x, int y);
 	void	mouseMotionFunc(int x,int y);

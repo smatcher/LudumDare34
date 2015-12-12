@@ -60,10 +60,12 @@ void GlutDemoApplication::specialKeyboard(int key, int x, int y)
 			}
 			break;
 		}
+	/*
 	case GLUT_KEY_LEFT : stepLeft(); break;
 	case GLUT_KEY_RIGHT : stepRight(); break;
 	case GLUT_KEY_UP : stepFront(); break;
 	case GLUT_KEY_DOWN : stepBack(); break;
+	*/
 	case GLUT_KEY_PAGE_UP : zoomIn(); break;
 	case GLUT_KEY_PAGE_DOWN : zoomOut(); break;
 	case GLUT_KEY_HOME : toggleIdle(); break;
