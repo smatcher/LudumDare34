@@ -333,17 +333,34 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 		// END OLD CODE
 
 		// BEGIN NEW CODE
-		extern GLuint gTexIdStreet;
 		extern GLuint gTexIdTartif1;
 		extern GLuint gTexIdTartif2;
 
-		glPushAttrib(GL_ENABLE_BIT);
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
 
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, gTexIdTartif1);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+		glMatrixMode(GL_TEXTURE);
+		glLoadIdentity();
+		glScalef(0.025f,0.025f,0.025f);
+		glMatrixMode(GL_MODELVIEW);
+
+		static const GLfloat	planex[]={1,0,0,0};
+		static const GLfloat	planey[]={0,1,0,0};
+		static const GLfloat	planez[]={0,0,1,0};
+		glTexGenfv(GL_S,GL_OBJECT_PLANE,planex);
+		glTexGenfv(GL_T,GL_OBJECT_PLANE,planez);
+		glTexGeni(GL_S,GL_TEXTURE_GEN_MODE,GL_OBJECT_LINEAR);
+		glTexGeni(GL_T,GL_TEXTURE_GEN_MODE,GL_OBJECT_LINEAR);
+		glEnable(GL_TEXTURE_GEN_S);
+		glEnable(GL_TEXTURE_GEN_T);
+		glEnable(GL_TEXTURE_GEN_R);
+
+		glEnable(GL_COLOR_MATERIAL);
+		
 		//static btScalar	scl=(btScalar)0.8;
 		static btScalar	scl=(btScalar)1.0f;
 		static btScalar	alp=(btScalar)1;
@@ -389,7 +406,7 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 			btVector3 pos2 = (x[2] - c)*scl + c;
 			//static float shadowZ = -11.9f;
 			//static float shadowZ = -9.9f;
-			static float shadowZ = 0.08f;
+			static float shadowZ = 0.2f;
 			pos0.setY(shadowZ);
 			pos1.setY(shadowZ);
 			pos2.setY(shadowZ);

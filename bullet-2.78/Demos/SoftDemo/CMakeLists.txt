@@ -25,7 +25,7 @@ IF (USE_GLUT)
 			main.cpp
 			SoftDemo.cpp
 			tgaloader.cpp
-			tgaloader.h
+			TileSet.cpp
 			${BULLET_PHYSICS_SOURCE_DIR}/msvc/bullet.rc
 		)
 	ELSE()
@@ -33,7 +33,7 @@ IF (USE_GLUT)
 			main.cpp
 			SoftDemo.cpp
 			tgaloader.cpp
-			tgaloader.h
+			TileSet.cpp
 		)
 	ENDIF()
 

@@ -30,6 +30,7 @@ subject to the following restrictions:
 #include "BulletDynamics\Dynamics\btDynamicsWorld.h"
 #include "BulletSoftBody/btSoftBody.h"
 
+#include "TileSet.h"
 
 class btBroadphaseInterface;
 class btCollisionShape;
@@ -77,6 +78,7 @@ public:
 	bool								m_left = false;
 	bool								m_right = false;
 	btSoftBody*							m_tartiflette;
+	TileSet								m_city_tileset;
 
 	//keep the collision shapes, for deletion/cleanup
 	btAlignedObjectArray<btCollisionShape*>		m_collisionShapes;

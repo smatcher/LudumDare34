@@ -1,0 +1,9 @@
+textures/city_straight.tga
+textures/city_cross.tga
+textures/city_turn.tga
+textures/city_double_turn.tga
+# 3 3
+3b 1b 3a
+1a 2a 1a
+3c 1b 3d
+

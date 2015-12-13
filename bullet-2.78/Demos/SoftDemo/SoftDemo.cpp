@@ -38,7 +38,6 @@ const float TRIANGLE_SIZE=8.f;
 
 #define CUBE_HALF_EXTENTS 1.5
 
-GLuint	gTexIdStreet	= 0;
 GLuint	gTexIdTartif1	= 0;
 GLuint	gTexIdTartif2	= 0;
 
@@ -152,7 +151,7 @@ static void Ctor_LinearStair(SoftDemo* pdemo,const btVector3& org,const btVector
 //
 static void	Init_Pressure(SoftDemo* pdemo)
 {
-	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(0,15,0),
+	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(0,5,0),
 		btVector3(1,1,1)*3,
 		512);
 	psb->m_materials[0]->m_kLST	=	0.1;
@@ -177,6 +176,9 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	pdemo->m_autocam=true;
 
 	pdemo->m_tartiflette = psb;
+
+	if(pdemo->m_bGraphicsInit)
+		pdemo->m_city_tileset.loadFromFile("textures/city.txt");
 }
 
 
@@ -304,7 +306,7 @@ void SoftDemo::clientMoveAndDisplay()
 		else if(m_right)
 			m_direction = m_direction.rotate(btVector3(0, 1, 0), -dt * gfDirectionSensitivityScale);
 
-		static float gfForceScale = 0.1f;
+		static float gfForceScale = 0.5f;
 		//static float gfJumpScale = 0.3f;
 		static float gfJumpScale = 0.0f;	// TODO: fix jump
 		static float gfTimeIncrementer = 0.0f;
@@ -426,31 +428,7 @@ void	SoftDemo::renderme()
 	
 	myinit();
 
-	// Draw ground
-	glPushAttrib(GL_ENABLE_BIT);
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-	glBindTexture(GL_TEXTURE_2D, gTexIdStreet);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	static float gfFloorHeight = 0.05f;
-	static float gfFloorSide	= 15.0f;
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f(-gfFloorSide, gfFloorHeight, -gfFloorSide);
-
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex3f(-gfFloorSide, gfFloorHeight, +gfFloorSide);
-
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex3f(+gfFloorSide, gfFloorHeight, +gfFloorSide);
-
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex3f(+gfFloorSide, gfFloorHeight, -gfFloorSide);
-	glEnd();
-	glPopAttrib();
+	m_city_tileset.draw();
 
 	updateCamera();
 
@@ -809,8 +787,11 @@ void SoftDemo::myinit()
 		// -------------
 		// Load textures
 		TGALoader	loader;
-		loader.loadOpenGLTexture("textures/street.tga", &gTexIdStreet, TGA_BILINEAR);
 		loader.loadOpenGLTexture("textures/tartif1.tga", &gTexIdTartif1, TGA_BILINEAR);
 		loader.loadOpenGLTexture("textures/tartif2.tga", &gTexIdTartif2, TGA_BILINEAR);
+
+		// ------------
+		// Load tileset(s)
+		m_city_tileset.loadFromFile("textures/city.txt");
 	}
 }
