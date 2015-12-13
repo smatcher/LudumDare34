@@ -20,6 +20,10 @@
 
 #include "tgaloader.h"
 
+#ifndef M_PI
+#define M_PI       3.14159265358979323846
+#endif
+
 extern float eye[3];
 extern int glutScreenWidth;
 extern int glutScreenHeight;
@@ -203,6 +207,8 @@ void SoftDemo::specialKeyboardUp(int key, int x, int y)
 void	SoftDemo::clientResetScene()
 {
 	//m_azi = 0;
+
+
 	m_cameraDistance = 30.f;
 	m_cameraTargetPosition.setValue(0,0,0);
 
@@ -272,6 +278,8 @@ void	SoftDemo::clientResetScene()
 
 void SoftDemo::clientMoveAndDisplay()
 {
+	m_azi = 180.0f * atan2(m_direction.getX(), m_direction.getZ()) / M_PI;
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT); 
 
 
