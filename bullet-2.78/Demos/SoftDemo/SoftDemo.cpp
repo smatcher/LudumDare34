@@ -980,8 +980,15 @@ void SoftDemo::clientMoveAndDisplay()
 		//if (m_idle)
 		//	dt = 1.0/420.f;
 
-		static float gfForceScale = 1.0f;
-		m_tartiflette->addForce(btVector3(m_left*gfForceScale, 0.0f, m_right*gfForceScale));
+		static float gfDirectionSensitivityScale = 3.14f;
+
+		if (m_left)
+			m_direction = m_direction.rotate(btVector3(0, 1, 0), dt * gfDirectionSensitivityScale);
+		else if(m_right)
+			m_direction = m_direction.rotate(btVector3(0, 1, 0), -dt * gfDirectionSensitivityScale);
+
+		static float gfForceScale = 0.5f;
+		m_tartiflette->addForce(gfForceScale * m_direction);
 
 		int numSimSteps;
 		numSimSteps = m_dynamicsWorld->stepSimulation(dt);

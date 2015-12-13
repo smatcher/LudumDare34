@@ -73,6 +73,7 @@ public:
 	bool								m_drag;
 
 
+	btVector3							m_direction = btVector3(1,0,0);
 	bool								m_left = false;
 	bool								m_right = false;
 	btSoftBody*							m_tartiflette;
