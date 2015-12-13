@@ -164,7 +164,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 
 		btTransform startTransform;
 		startTransform.setIdentity();
-		startTransform.setOrigin(btVector3(0,height/2,0.5));
+		startTransform.setOrigin(btVector3(20,height/2,0.5));
 		btRigidBody*		body=pdemo->localCreateRigidBody(mass,startTransform,new btBoxShape(btVector3(5,height,5)));
 	}
 
@@ -296,8 +296,10 @@ void SoftDemo::clientMoveAndDisplay()
 		else if(m_right)
 			m_direction = m_direction.rotate(btVector3(0, 1, 0), -dt * gfDirectionSensitivityScale);
 
-		static float gfForceScale = 30.0f;
-		static float gfJumpScale = 0.3f;
+		//static float gfForceScale = 30.0f;
+		static float gfForceScale = 0.01f;
+		//static float gfJumpScale = 0.3f;
+		static float gfJumpScale = 0.1f;
 		static float gfTimeIncrementer = 0.0f;
 		static float gfTimeScale = 1.6f;
 		gfTimeIncrementer += dt * gfTimeScale;
@@ -416,6 +418,32 @@ void	SoftDemo::renderme()
 
 	
 	myinit();
+
+	// Draw ground
+	glPushAttrib(GL_ENABLE_BIT);
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
+	glBindTexture(GL_TEXTURE_2D, gTexIdStreet);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	static float gfFloorHeight = 0.05f;
+	static float gfFloorSide	= 15.0f;
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(-gfFloorSide, gfFloorHeight, -gfFloorSide);
+
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(-gfFloorSide, gfFloorHeight, +gfFloorSide);
+
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(+gfFloorSide, gfFloorHeight, +gfFloorSide);
+
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(+gfFloorSide, gfFloorHeight, -gfFloorSide);
+	glEnd();
+	glPopAttrib();
 
 	updateCamera();
 
@@ -765,7 +793,8 @@ void SoftDemo::myinit()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	glClearColor(btScalar(0.7),btScalar(0.7),btScalar(0.7),btScalar(0));
+	//glClearColor(btScalar(0.7),btScalar(0.7),btScalar(0.7),btScalar(0));
+	glClearColor(114.0f/255.0f, 200.0f/255.0f, 255.0f/255.0f, 0.0f);
 
 	if(!m_bGraphicsInit)
 	{
