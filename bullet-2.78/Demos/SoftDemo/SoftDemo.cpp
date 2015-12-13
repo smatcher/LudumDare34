@@ -91,34 +91,34 @@ void SoftDemo::displayCallback(void) {
 //	pdemo->localCreateRigidBody(mass,startTransform,new btSphereShape(3));
 //}
 //
-////
-//// Big plate
-////
-//static btRigidBody*	Ctor_BigPlate(SoftDemo* pdemo,btScalar mass=15,btScalar height=4)
-//{
-//	btTransform startTransform;
-//	startTransform.setIdentity();
-//	startTransform.setOrigin(btVector3(0,height,0.5));
-//	btRigidBody*		body=pdemo->localCreateRigidBody(mass,startTransform,new btBoxShape(btVector3(5,1,5)));
-//	body->setFriction(1);
-//	return(body);
-//}
+//
+// Big plate
+//
+static btRigidBody*	Ctor_BigPlate(SoftDemo* pdemo,btScalar mass=15,btScalar height=4)
+{
+	btTransform startTransform;
+	startTransform.setIdentity();
+	startTransform.setOrigin(btVector3(0,height,0.5));
+	btRigidBody*		body=pdemo->localCreateRigidBody(mass,startTransform,new btBoxShape(btVector3(5,1,5)));
+	body->setFriction(1);
+	return(body);
+}
 
 //
 // Linear stair
 //
-//static void Ctor_LinearStair(SoftDemo* pdemo,const btVector3& org,const btVector3& sizes,btScalar angle,int count)
-//{
-//	btBoxShape*	shape=new btBoxShape(sizes);
-//	for(int i=0;i<count;++i)
-//	{
-//		btTransform startTransform;
-//		startTransform.setIdentity();
-//		startTransform.setOrigin(org+btVector3(sizes.x()*i*2,sizes.y()*i*2,0));
-//		btRigidBody* body=pdemo->localCreateRigidBody(0,startTransform,shape);
-//		body->setFriction(1);
-//	}
-//}
+static void Ctor_LinearStair(SoftDemo* pdemo,const btVector3& org,const btVector3& sizes,btScalar angle,int count)
+{
+	btBoxShape*	shape=new btBoxShape(sizes);
+	for(int i=0;i<count;++i)
+	{
+		btTransform startTransform;
+		startTransform.setIdentity();
+		startTransform.setOrigin(org+btVector3(sizes.x()*i*2,sizes.y()*i*2,0));
+		btRigidBody* body=pdemo->localCreateRigidBody(0,startTransform,shape);
+		body->setFriction(1);
+	}
+}
 
 //
 // Softbox
@@ -148,7 +148,7 @@ void SoftDemo::displayCallback(void) {
 //
 static void	Init_Pressure(SoftDemo* pdemo)
 {
-	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(0,0,0),
+	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(0,15,0),
 		btVector3(1,1,1)*3,
 		512);
 	psb->m_materials[0]->m_kLST	=	0.1;
@@ -157,6 +157,16 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	psb->m_cfg.kPR				=	2500;
 	psb->setTotalMass(30,true);
 	pdemo->getSoftDynamicsWorld()->addSoftBody(psb);
+
+	{
+		btScalar mass=0;
+		btScalar height=10;
+
+		btTransform startTransform;
+		startTransform.setIdentity();
+		startTransform.setOrigin(btVector3(0,height/2,0.5));
+		btRigidBody*		body=pdemo->localCreateRigidBody(mass,startTransform,new btBoxShape(btVector3(5,height,5)));
+	}
 
 	//Ctor_BigPlate(pdemo);
 	//Ctor_LinearStair(pdemo,btVector3(0,0,0),btVector3(2,1,5),0,10);
@@ -231,7 +241,8 @@ void	SoftDemo::clientResetScene()
 	//create ground object
 	btTransform tr;
 	tr.setIdentity();
-	tr.setOrigin(btVector3(0,-12,0));
+	//tr.setOrigin(btVector3(0,-12,0));
+	tr.setOrigin(btVector3(0,-CUBE_HALF_EXTENTS,0));
 
 	btCollisionObject* newOb = new btCollisionObject();
 	newOb->setWorldTransform(tr);
