@@ -334,7 +334,7 @@ static btSoftBody* Ctor_SoftBoulder(SoftDemo* pdemo,const btVector3& p,const btV
 static void	Init_Pressure(SoftDemo* pdemo)
 {
 	//TRACEDEMO
-	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(35,25,0),
+	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(0,0,0),
 		btVector3(1,1,1)*3,
 		512);
 	psb->m_materials[0]->m_kLST	=	0.1;
@@ -988,7 +988,15 @@ void SoftDemo::clientMoveAndDisplay()
 			m_direction = m_direction.rotate(btVector3(0, 1, 0), -dt * gfDirectionSensitivityScale);
 
 		static float gfForceScale = 0.5f;
-		m_tartiflette->addForce(gfForceScale * m_direction);
+		static float gfJumpScale = 0.5f;
+		static float timeIncrementer = 0.0f;
+		timeIncrementer += dt;
+
+		float timeFunc = 0.5f * (1.0f + sinf(timeIncrementer));
+		float forceScale = gfForceScale * timeFunc;
+		float jumpScale = gfJumpScale * (timeFunc * timeFunc);
+
+		m_tartiflette->addForce(forceScale * m_direction + jumpScale * btVector3(0,1,0));
 
 		int numSimSteps;
 		numSimSteps = m_dynamicsWorld->stepSimulation(dt);
