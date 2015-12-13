@@ -387,7 +387,8 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 			btVector3 pos0 = (x[0] - c)*scl + c;
 			btVector3 pos1 = (x[1] - c)*scl + c;
 			btVector3 pos2 = (x[2] - c)*scl + c;
-			static float shadowZ = -11.9f;
+			//static float shadowZ = -11.9f;
+			static float shadowZ = -9.9f;
 			pos0.setY(shadowZ);
 			pos1.setY(shadowZ);
 			pos2.setY(shadowZ);
