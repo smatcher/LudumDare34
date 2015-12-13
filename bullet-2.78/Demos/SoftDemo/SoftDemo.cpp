@@ -499,19 +499,19 @@ void	SoftDemo::keyboardCallback(unsigned char key, int x, int y)
 {
 	switch(key)
 	{
-	case	',':	m_raycast=!m_raycast;break;
-	case	';':	m_autocam=!m_autocam;break;
-	case	'c':	getSoftDynamicsWorld()->setDrawFlags(getSoftDynamicsWorld()->getDrawFlags()^fDrawFlags::Clusters);break;
-	case	'`':
-		{
-			btSoftBodyArray&	sbs=getSoftDynamicsWorld()->getSoftBodyArray();
-			for(int ib=0;ib<sbs.size();++ib)
-			{
-				btSoftBody*	psb=sbs[ib];
-				psb->staticSolve(128);
-			}
-		}
-		break;
+//	case	',':	m_raycast=!m_raycast;break;
+//	case	';':	m_autocam=!m_autocam;break;
+//	case	'c':	getSoftDynamicsWorld()->setDrawFlags(getSoftDynamicsWorld()->getDrawFlags()^fDrawFlags::Clusters);break;
+//	case	'`':
+//		{
+//			btSoftBodyArray&	sbs=getSoftDynamicsWorld()->getSoftBodyArray();
+//			for(int ib=0;ib<sbs.size();++ib)
+//			{
+//				btSoftBody*	psb=sbs[ib];
+//				psb->staticSolve(128);
+//			}
+//		}
+//		break;
 	default:		DemoApplication::keyboardCallback(key,x,y);
 	}
 }
