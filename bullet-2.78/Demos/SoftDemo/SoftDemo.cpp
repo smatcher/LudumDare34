@@ -285,22 +285,17 @@ void SoftDemo::clientMoveAndDisplay()
 		else if(m_right)
 			m_direction = m_direction.rotate(btVector3(0, 1, 0), -dt * gfDirectionSensitivityScale);
 
-		// ------ VERSION FUNTO -----
-		static float gfForceScale = 17.0f;
-		m_tartiflette->addForce(gfForceScale * m_direction * dt);
-		
-		// ------ VERSION SMATCHER (à adapter) -----
-//		static float gfForceScale = 0.5f;
-//		static float gfJumpScale = 0.5f;
-//		static float timeIncrementer = 0.0f;
-//		timeIncrementer += dt;
-//
-//		float timeFunc = 0.5f * (1.0f + sinf(timeIncrementer));
-//		float forceScale = gfForceScale * timeFunc;
-//		float jumpScale = gfJumpScale * (timeFunc * timeFunc);
-//
-//		m_tartiflette->addForce(forceScale * m_direction + jumpScale * btVector3(0,1,0));
-		// ----------------------------------------
+		static float gfForceScale = 30.0f;
+		static float gfJumpScale = 0.3f;
+		static float gfTimeIncrementer = 0.0f;
+		static float gfTimeScale = 1.6f;
+		gfTimeIncrementer += dt * gfTimeScale;
+
+		float timeFunc = 0.5f * (1.0f + sinf(gfTimeIncrementer));
+		float forceScale = gfForceScale * timeFunc * dt;
+		float jumpScale = gfJumpScale * (timeFunc * timeFunc);
+
+		m_tartiflette->addForce(forceScale * m_direction + jumpScale * btVector3(0,1,0));
 
 		int numSimSteps;
 		numSimSteps = m_dynamicsWorld->stepSimulation(dt);
