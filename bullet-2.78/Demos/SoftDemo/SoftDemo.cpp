@@ -212,7 +212,6 @@ static void	Init_Pressure(SoftDemo* pdemo)
 						sizeZ=temp;
 					}
 					btRigidBody*	pCar	= pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(sizeX, height, sizeZ)));
-					pCar->setUserPointer((void*)42);
 					pdemo->m_cars.push_back(pCar);
 				}
 			}

@@ -37,6 +37,9 @@ protected:
 	btAlignedObjectArray<ShapeCache*>	m_shapecaches;
 	unsigned int						m_roof_texturehandle;
 	unsigned int						m_walls_texturehandle;
+	unsigned int						m_cartop_texturehandle;
+	unsigned int						m_carside_texturehandle;
+	unsigned int						m_carfront_texturehandle;
 	bool								m_textureenabled;
 	bool								m_textureinitialized;
 	
