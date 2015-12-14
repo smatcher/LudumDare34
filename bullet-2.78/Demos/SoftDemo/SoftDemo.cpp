@@ -208,9 +208,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 					float sizeZ = 3.0f;
 					if(rand() < RAND_MAX/2)
 					{
-						float temp=sizeX;
-						sizeX=sizeZ;
-						sizeZ=temp;
+						startTransform.setRotation(btQuaternion(btVector3(0.0f, 1.0f, 0.0f), M_PI/2.0f));
 					}
 					btRigidBody*	pCar	= pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(sizeX, height, sizeZ)));
 					pdemo->m_cars.push_back(pCar);
@@ -361,12 +359,19 @@ void SoftDemo::clientMoveAndDisplay()
 		m_tartiflette->m_cfg.kVC = m_tartifletteVC;
 
 		// Make cars go away from us
-		for(int i=0 ; i < m_cars.size() ; i++)
-		{
-			//m_cars[i]->getOrientation();
-			//const btVector3	vCarPos = m_cars[i]->getWorldTransform().getOrigin();
-			//float dist = (vCarPos-gTartifletteCenter).length();
-		}
+		//for(int i=0 ; i < m_cars.size() ; i++)
+		//{
+		//	const btVector3	vCarPos = m_cars[i]->getWorldTransform().getOrigin();
+		//	btVector3	vTartifletteToCar	= vCarPos-gTartifletteCenter;
+		//	vTartifletteToCar.safeNormalize();
+		//
+		//	btQuaternion	targetOrientation;
+		//	targetOrientation.setRotation(btVector3(0.0f, 1.0f, 0.0f), atan2(vTartifletteToCar.getY(), vTartifletteToCar.getX()));
+		//
+		//	btTransform	transform	= m_cars[i]->getWorldTransform();
+		//	transform.setRotation(targetOrientation);
+		//	m_cars[i]->setWorldTransform(transform);
+		//}
 
 		int numSimSteps;
 		numSimSteps = m_dynamicsWorld->stepSimulation(dt);
