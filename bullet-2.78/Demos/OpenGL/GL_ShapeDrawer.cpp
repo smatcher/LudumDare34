@@ -501,6 +501,9 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 			TGALoader	loader;
 			loader.loadOpenGLTexture("textures/roof.tga", &m_roof_texturehandle, TGA_BILINEAR);
 			loader.loadOpenGLTexture("textures/wall.tga", &m_walls_texturehandle, TGA_BILINEAR);
+			loader.loadOpenGLTexture("textures/car_top.tga", &m_cartop_texturehandle, TGA_BILINEAR);
+			loader.loadOpenGLTexture("textures/car_side.tga", &m_carside_texturehandle, TGA_BILINEAR);
+			loader.loadOpenGLTexture("textures/car_front.tga", &m_carfront_texturehandle, TGA_BILINEAR);
 
 			/*
 			GLubyte*	image=new GLubyte[256*256*3];
@@ -556,13 +559,18 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 			
 
 		//drawCoordSystem();
+		const btBoxShape* boxShape = static_cast<const btBoxShape*>(shape);
+		bool isCar = shape->getShapeType() == BOX_SHAPE_PROXYTYPE && boxShape->getHalfExtentsWithMargin()[0] < 4.0f;
 
 		//glPushMatrix();
 		glEnable(GL_COLOR_MATERIAL);
 		if(m_textureenabled) 
 		{
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D,m_walls_texturehandle);
+			if (isCar)
+				glBindTexture(GL_TEXTURE_2D, m_carside_texturehandle);
+			else
+				glBindTexture(GL_TEXTURE_2D,m_walls_texturehandle);
 		} else
 		{
 			glDisable(GL_TEXTURE_2D);
@@ -661,7 +669,11 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 					}
 					glEnd();
 
-					glBindTexture(GL_TEXTURE_2D, m_roof_texturehandle);
+					if (isCar)
+						glBindTexture(GL_TEXTURE_2D, m_cartop_texturehandle);
+					else
+						glBindTexture(GL_TEXTURE_2D, m_roof_texturehandle);
+
 					glBegin(GL_TRIANGLES);
 					for (int i = 0; i<si; i += 3)
 					{
