@@ -343,16 +343,17 @@ void SoftDemo::clientMoveAndDisplay()
 		else if(m_right)
 			m_direction = m_direction.rotate(btVector3(0, 1, 0), -dt * gfDirectionSensitivityScale);
 
-		static float gfForceScale = 0.5f;
-		//static float gfJumpScale = 0.3f;
-		static float gfJumpScale = 0.0f;	// TODO: fix jump
+		static float gfForceScale = 1.0f;
+		static float gfJumpScale = 0.3f;
 		static float gfTimeIncrementer = 0.0f;
 		static float gfTimeScale = 1.6f;
 		gfTimeIncrementer += dt * gfTimeScale;
 
-		float timeFunc = 0.5f * (1.0f + sinf(gfTimeIncrementer));
-		float forceScale = gfForceScale * timeFunc;
-		float jumpScale = gfJumpScale * (timeFunc * timeFunc);
+		float forceTimeFunc = 0.5f * (1.0f + sinf(gfTimeIncrementer));
+		float jumpTimeFunc = 0.5f * (1.0f + sinf(gfTimeIncrementer - M_PI*0.25f));
+		jumpTimeFunc = jumpTimeFunc * jumpTimeFunc;
+		float forceScale = gfForceScale * forceTimeFunc;
+		float jumpScale = gfJumpScale * jumpTimeFunc;
 
 		m_tartiflette->addForce(forceScale * m_direction + jumpScale * btVector3(0,1,0));
 
