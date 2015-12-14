@@ -22,7 +22,7 @@ public:
 	TileSet();
 	~TileSet();
 	void	loadFromFile(const char* filename);
-	void	draw();
+	void	draw(int x_offset, int y_offset);
 	void	clear();
 };
 

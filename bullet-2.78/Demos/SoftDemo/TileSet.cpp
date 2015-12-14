@@ -96,7 +96,7 @@ void TileSet::clear()
 	m_texIds.clear();
 }
 
-void TileSet::draw()
+void TileSet::draw(int x_offset, int y_offset)
 {
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
 
@@ -131,16 +131,16 @@ void TileSet::draw()
 
 			glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, 0.0f);
-			glVertex3f((x+0) * gfFloorSide, gfFloorHeight, (y+0) * gfFloorSide);
+			glVertex3f(x_offset + (x+0) * gfFloorSide, gfFloorHeight, y_offset + (y+0) * gfFloorSide);
 
 			glTexCoord2f(0.0f, 1.0f);
-			glVertex3f((x+0) * gfFloorSide, gfFloorHeight, (y+1) * gfFloorSide);
+			glVertex3f(x_offset + (x+0) * gfFloorSide, gfFloorHeight, y_offset + (y+1) * gfFloorSide);
 
 			glTexCoord2f(1.0f, 1.0f);
-			glVertex3f((x+1) * gfFloorSide, gfFloorHeight, (y+1) * gfFloorSide);
+			glVertex3f(x_offset + (x+1) * gfFloorSide, gfFloorHeight, y_offset + (y+1) * gfFloorSide);
 
 			glTexCoord2f(1.0f, 0.0f);
-			glVertex3f((x+1) * gfFloorSide, gfFloorHeight, (y+0) * gfFloorSide);
+			glVertex3f(x_offset + (x+1) * gfFloorSide, gfFloorHeight, y_offset + (y+0) * gfFloorSide);
 			glEnd();
 		}
 	}

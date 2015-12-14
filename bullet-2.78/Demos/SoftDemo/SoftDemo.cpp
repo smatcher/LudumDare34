@@ -428,7 +428,7 @@ void	SoftDemo::renderme()
 	
 	myinit();
 
-	m_city_tileset.draw();
+	m_city_tileset.draw(-15*7, -15*7);
 
 	updateCamera();
 
