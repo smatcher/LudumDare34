@@ -440,9 +440,9 @@ void	SoftDemo::renderme()
 	
 	myinit();
 
-	m_city_tileset.draw(cityXOffset, cityYOffset);
-
 	updateCamera();
+
+	m_city_tileset.draw(cityXOffset, cityYOffset);
 
 	if (m_dynamicsWorld)
 	{			
