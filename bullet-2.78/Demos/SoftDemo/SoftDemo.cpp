@@ -40,6 +40,7 @@ const float TRIANGLE_SIZE=8.f;
 
 GLuint	gTexIdTartif1	= 0;
 GLuint	gTexIdTartif2	= 0;
+btVector3	gTartifletteCenter	= btVector3(0.0f, 0.0f, 0.0f);
 
 static const int cityXOffset = -7 * 15;
 static const int cityYOffset = -7 * 15;
@@ -372,15 +373,18 @@ void SoftDemo::clientMoveAndDisplay()
 
 		// Eat cars!
 		//float minDist = FLT_MAX;
-		//const btVector3	vTartiflettePos	= m_tartiflette->getWorldTransform().getOrigin();
-		//for(int i=m_cars.size()-1 ; i >= 0 ; i--)
-		//{
-		//	const btVector3	vCarPos = m_cars[i]->getWorldTransform().getOrigin();
-		//	float dist = (vCarPos-vTartiflettePos).length();
-		//	if(dist < minDist)
-		//		minDist = dist;
-		//}
-		//printf("minDist = %f\n", minDist);
+		static float gfMinDistToEatCars = 4.0f;
+		for(int i=m_cars.size()-1 ; i >= 0 ; i--)
+		{
+			const btVector3	vCarPos = m_cars[i]->getWorldTransform().getOrigin();
+			float dist = (vCarPos-gTartifletteCenter).length();
+			if(dist < gfMinDistToEatCars)
+			{
+				printf("MIAM!\n");
+				m_dynamicsWorld->removeRigidBody(m_cars[i]);
+				m_cars.erase(m_cars.begin() + i);
+			}
+		}
 	}
 
 

@@ -387,6 +387,9 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 			vCenter /= (float)nbPoints;
 		}
 
+		extern btVector3	gTartifletteCenter;
+		gTartifletteCenter	= vCenter;
+
 		// Draw shadow
 		glDisable(GL_TEXTURE_2D);
 		for (i = 0; i<psb->m_faces.size(); ++i)
