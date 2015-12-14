@@ -35,7 +35,8 @@ protected:
 	};
 	//clean-up memory of dynamically created shape hulls
 	btAlignedObjectArray<ShapeCache*>	m_shapecaches;
-	unsigned int						m_texturehandle;
+	unsigned int						m_roof_texturehandle;
+	unsigned int						m_walls_texturehandle;
 	bool								m_textureenabled;
 	bool								m_textureinitialized;
 	

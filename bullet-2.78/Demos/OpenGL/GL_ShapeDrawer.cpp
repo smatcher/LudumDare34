@@ -17,7 +17,7 @@ subject to the following restrictions:
 #include <windows.h>
 #endif
 #include "GLDebugFont.h"
-
+#include "../SoftDemo/tgaloader.h"
 
 
 #include "GlutStuff.h"
@@ -498,6 +498,11 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 	{
 		if(m_textureenabled&&(!m_textureinitialized))
 		{
+			TGALoader	loader;
+			loader.loadOpenGLTexture("textures/roof.tga", &m_roof_texturehandle, TGA_BILINEAR);
+			loader.loadOpenGLTexture("textures/wall.tga", &m_walls_texturehandle, TGA_BILINEAR);
+
+			/*
 			GLubyte*	image=new GLubyte[256*256*3];
 			for(int y=0;y<256;++y)
 			{
@@ -521,15 +526,14 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 			glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
 			gluBuild2DMipmaps(GL_TEXTURE_2D,3,256,256,GL_RGB,GL_UNSIGNED_BYTE,image);
 			delete[] image;
-	
-			
+			*/
 		}
 
 		glMatrixMode(GL_TEXTURE);
 		glLoadIdentity();
-		glScalef(0.025f,0.025f,0.025f);
+//		glScalef(0.025f,0.025f,0.025f);
 		glMatrixMode(GL_MODELVIEW);
-
+		/*
 		static const GLfloat	planex[]={1,0,0,0};
 		//	static const GLfloat	planey[]={0,1,0,0};
 			static const GLfloat	planez[]={0,0,1,0};
@@ -540,6 +544,12 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 			glEnable(GL_TEXTURE_GEN_S);
 			glEnable(GL_TEXTURE_GEN_T);
 			glEnable(GL_TEXTURE_GEN_R);
+		*/
+
+			glDisable(GL_TEXTURE_GEN_S);
+			glDisable(GL_TEXTURE_GEN_T);
+			glDisable(GL_TEXTURE_GEN_R);
+
 			m_textureinitialized=true;
 
 		
@@ -552,14 +562,15 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 		if(m_textureenabled) 
 		{
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D,m_texturehandle);
+			glBindTexture(GL_TEXTURE_2D,m_walls_texturehandle);
 		} else
 		{
 			glDisable(GL_TEXTURE_2D);
 		}
 
 
-		glColor3f(color.x(),color.y(), color.z());		
+		glColor3f(1.0f, 1.0f, 1.0f);
+		//glColor3f(color.x(),color.y(), color.z());		
 
 		bool useWireframeFallback = true;
 
@@ -601,6 +612,21 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 						7,2,3,
 						7,6,2};
 
+					float uvs[72] = {
+						1,1, 0,1, 1,0, //0,1,2
+						0,0, 1,0, 0,1, //3,2,1,
+						1,1, 0,1, 1,0, //4,0,6,
+						1,0, 0,1, 0,0, //6,0,2,
+						1,1, 0,1, 1,0, //5,1,4,
+						1,0, 0,1, 0,0, //4,1,0,
+						0,1, 1,1, 1,0, //7,3,1,
+						0,1, 1,0, 0,0, //7,1,5,
+						1,1, 0,1, 1,0, //5,4,7,
+						1,0, 0,1, 0,0, //7,4,6,
+						0,1, 1,0, 0,0, //7,2,3,
+						0,1, 1,1, 1,0, //7,6,2
+						};
+
 					 btVector3 vertices[8]={	
 						btVector3(halfExtent[0],halfExtent[1],halfExtent[2]),
 						btVector3(-halfExtent[0],halfExtent[1],halfExtent[2]),
@@ -615,16 +641,47 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 					int si=36;
 					for (int i=0;i<si;i+=3)
 					{
+						if (i == 12 || i == 15)
+							continue; // Skip roof
+
 						const btVector3& v1 = vertices[indices[i]];;
 						const btVector3& v2 = vertices[indices[i+1]];
 						const btVector3& v3 = vertices[indices[i+2]];
 						btVector3 normal = (v3-v1).cross(v2-v1);
 						normal.normalize ();
 						glNormal3f(normal.getX(),normal.getY(),normal.getZ());
+						glTexCoord2f(uvs[2*i], uvs[2*i+1]);
 						glVertex3f (v1.x(), v1.y(), v1.z());
+						glTexCoord2f(uvs[2*i+2], uvs[2*i+3]);
 						glVertex3f (v2.x(), v2.y(), v2.z());
+						glTexCoord2f(uvs[2*i+4], uvs[2*i+5]);
 						glVertex3f (v3.x(), v3.y(), v3.z());
+
 						
+					}
+					glEnd();
+
+					glBindTexture(GL_TEXTURE_2D, m_roof_texturehandle);
+					glBegin(GL_TRIANGLES);
+					for (int i = 0; i<si; i += 3)
+					{
+						if (i != 12 && i != 15)
+							continue; // Skip all but roof
+
+						const btVector3& v1 = vertices[indices[i]];;
+						const btVector3& v2 = vertices[indices[i + 1]];
+						const btVector3& v3 = vertices[indices[i + 2]];
+						btVector3 normal = (v3 - v1).cross(v2 - v1);
+						normal.normalize();
+						glNormal3f(normal.getX(), normal.getY(), normal.getZ());
+						glTexCoord2f(uvs[2 * i], uvs[2 * i + 1]);
+						glVertex3f(v1.x(), v1.y(), v1.z());
+						glTexCoord2f(uvs[2 * i + 2], uvs[2 * i + 3]);
+						glVertex3f(v2.x(), v2.y(), v2.z());
+						glTexCoord2f(uvs[2 * i + 4], uvs[2 * i + 5]);
+						glVertex3f(v3.x(), v3.y(), v3.z());
+
+
 					}
 					glEnd();
 #endif
@@ -966,7 +1023,8 @@ void		GL_ShapeDrawer::drawShadow(btScalar* m,const btVector3& extrusion,const bt
 //
 GL_ShapeDrawer::GL_ShapeDrawer()
 {
-	m_texturehandle			=	0;
+	m_roof_texturehandle   =	0;
+	m_walls_texturehandle  = 0;
 	m_textureenabled		=	false;
 	m_textureinitialized	=	false;
 }
@@ -982,7 +1040,8 @@ GL_ShapeDrawer::~GL_ShapeDrawer()
 	m_shapecaches.clear();
 	if(m_textureinitialized)
 	{
-		glDeleteTextures(1,(const GLuint*) &m_texturehandle);
+		glDeleteTextures(1,(const GLuint*) &m_roof_texturehandle);
+		glDeleteTextures(1, (const GLuint*)&m_walls_texturehandle);
 	}
 }
 
