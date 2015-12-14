@@ -78,6 +78,7 @@ public:
 	bool								m_left = false;
 	bool								m_right = false;
 	btSoftBody*							m_tartiflette;
+	float								m_tartifletteVC;
 	TileSet								m_city_tileset;
 	std::vector<btRigidBody*>			m_cars;
 

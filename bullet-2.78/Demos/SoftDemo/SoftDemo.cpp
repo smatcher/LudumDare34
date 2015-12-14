@@ -156,7 +156,7 @@ static void Ctor_LinearStair(SoftDemo* pdemo,const btVector3& org,const btVector
 static void	Init_Pressure(SoftDemo* pdemo)
 {
 	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(0,5,0),
-		btVector3(1,1,1)*3,
+		btVector3(1,1,1)*6,
 		512);
 	psb->m_materials[0]->m_kLST	=	0.1;
 	psb->m_cfg.kDF				=	1;
@@ -170,6 +170,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	pdemo->m_autocam=true;
 
 	pdemo->m_tartiflette = psb;
+	pdemo->m_tartifletteVC = 0.08f;
 
 	if(pdemo->m_bGraphicsInit)
 		pdemo->m_city_tileset.loadFromFile("textures/city.txt");
@@ -358,6 +359,8 @@ void SoftDemo::clientMoveAndDisplay()
 
 		m_tartiflette->addForce(forceScale * m_direction + jumpScale * btVector3(0,1,0));
 
+		m_tartiflette->m_cfg.kVC = m_tartifletteVC;
+
 		int numSimSteps;
 		numSimSteps = m_dynamicsWorld->stepSimulation(dt);
 		//numSimSteps = m_dynamicsWorld->stepSimulation(dt,10,1./240.f);
@@ -382,6 +385,7 @@ void SoftDemo::clientMoveAndDisplay()
 			{
 				printf("MIAM!\n");
 				m_dynamicsWorld->removeRigidBody(m_cars[i]);
+				m_tartifletteVC *= 0.8f;
 				m_cars.erase(m_cars.begin() + i);
 			}
 		}
