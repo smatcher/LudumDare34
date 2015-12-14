@@ -361,6 +361,14 @@ void SoftDemo::clientMoveAndDisplay()
 
 		m_tartiflette->m_cfg.kVC = m_tartifletteVC;
 
+		// Make cars go away from us
+		for(int i=0 ; i < m_cars.size() ; i++)
+		{
+			//m_cars[i]->getOrientation();
+			//const btVector3	vCarPos = m_cars[i]->getWorldTransform().getOrigin();
+			//float dist = (vCarPos-gTartifletteCenter).length();
+		}
+
 		int numSimSteps;
 		numSimSteps = m_dynamicsWorld->stepSimulation(dt);
 		//numSimSteps = m_dynamicsWorld->stepSimulation(dt,10,1./240.f);
@@ -375,7 +383,6 @@ void SoftDemo::clientMoveAndDisplay()
 
 
 		// Eat cars!
-		//float minDist = FLT_MAX;
 		static float gfMinDistToEatCars = 4.0f;
 		for(int i=m_cars.size()-1 ; i >= 0 ; i--)
 		{
