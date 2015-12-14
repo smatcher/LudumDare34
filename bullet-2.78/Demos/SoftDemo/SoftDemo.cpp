@@ -41,6 +41,9 @@ const float TRIANGLE_SIZE=8.f;
 GLuint	gTexIdTartif1	= 0;
 GLuint	gTexIdTartif2	= 0;
 
+static const int cityXOffset = -7 * 15;
+static const int cityYOffset = -7 * 15;
+
 //
 //void SoftDemo::createStack( btCollisionShape* boxShape, float halfCubeSize, int size, float zPos )
 //{
@@ -160,17 +163,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	psb->m_cfg.kPR				=	2500;
 	psb->setTotalMass(30,true);
 	pdemo->getSoftDynamicsWorld()->addSoftBody(psb);
-
-	{
-		btScalar mass=0;
-		btScalar height=10;
-
-		btTransform startTransform;
-		startTransform.setIdentity();
-		startTransform.setOrigin(btVector3(20,height/2,0.5));
-		btRigidBody*		body=pdemo->localCreateRigidBody(mass,startTransform,new btBoxShape(btVector3(5,height,5)));
-	}
-
+	
 	//Ctor_BigPlate(pdemo);
 	//Ctor_LinearStair(pdemo,btVector3(0,0,0),btVector3(2,1,5),0,10);
 	pdemo->m_autocam=true;
@@ -179,6 +172,25 @@ static void	Init_Pressure(SoftDemo* pdemo)
 
 	if(pdemo->m_bGraphicsInit)
 		pdemo->m_city_tileset.loadFromFile("textures/city.txt");
+
+
+	for (int i = 0; i < pdemo->m_city_tileset.width(); i++)
+	{
+		for (int j = 0; j < pdemo->m_city_tileset.height(); j++)
+		{
+			if (pdemo->m_city_tileset.isBuilding(i, j))
+			{
+				btScalar mass = 0;
+				btScalar height = 10;
+				btScalar width = 7.5;
+
+				btTransform startTransform;
+				startTransform.setIdentity();
+				startTransform.setOrigin(btVector3(cityXOffset + 15*i + width, height / 2, cityYOffset + 15*j + width));
+				btRigidBody*		body = pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(width, height, width)));
+			}
+		}
+	}
 }
 
 
@@ -428,7 +440,7 @@ void	SoftDemo::renderme()
 	
 	myinit();
 
-	m_city_tileset.draw(-15*7, -15*7);
+	m_city_tileset.draw(cityXOffset, cityYOffset);
 
 	updateCamera();
 
@@ -637,7 +649,7 @@ void	SoftDemo::initPhysics()
 
 	m_collisionShapes.push_back(groundShape);
 
-	btCollisionShape* groundBox = new btBoxShape (btVector3(100,CUBE_HALF_EXTENTS,100));
+	btCollisionShape* groundBox = new btBoxShape (btVector3(260,CUBE_HALF_EXTENTS,260));
 	m_collisionShapes.push_back(groundBox);
 
 	btCompoundShape* cylinderCompound = new btCompoundShape;
@@ -793,5 +805,7 @@ void SoftDemo::myinit()
 		// ------------
 		// Load tileset(s)
 		m_city_tileset.loadFromFile("textures/city.txt");
+
+		clientResetScene(); // don't ask
 	}
 }
