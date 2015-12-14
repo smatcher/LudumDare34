@@ -173,7 +173,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 	if(pdemo->m_bGraphicsInit)
 		pdemo->m_city_tileset.loadFromFile("textures/city.txt");
 
-
+	pdemo->m_cars.clear();
 	srand(42);
 
 	for (int i = 0; i < pdemo->m_city_tileset.width(); i++)
@@ -210,7 +210,9 @@ static void	Init_Pressure(SoftDemo* pdemo)
 						sizeX=sizeZ;
 						sizeZ=temp;
 					}
-					pdemo->m_cars.push_back(pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(sizeX, height, sizeZ))));
+					btRigidBody*	pCar	= pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(sizeX, height, sizeZ)));
+					pCar->setUserPointer((void*)42);
+					pdemo->m_cars.push_back(pCar);
 				}
 			}
 		}
@@ -367,13 +369,17 @@ void SoftDemo::clientMoveAndDisplay()
 		//optional but useful: debug drawing
 
 
-		// TEST COLLISION
-		//if(m_test_car->checkCollideWith(m_tartiflette))
+		// Eat cars!
+		//float minDist = FLT_MAX;
+		//const btVector3	vTartiflettePos	= m_tartiflette->getWorldTransform().getOrigin();
+		//for(int i=m_cars.size()-1 ; i >= 0 ; i--)
 		//{
-		//	static int debug=0;
-		//	debug++;
-		//	printf("COLLISION ! %d\n",debug);
+		//	const btVector3	vCarPos = m_cars[i]->getWorldTransform().getOrigin();
+		//	float dist = (vCarPos-vTartiflettePos).length();
+		//	if(dist < minDist)
+		//		minDist = dist;
 		//}
+		//printf("minDist = %f\n", minDist);
 	}
 
 
