@@ -198,20 +198,19 @@ static void	Init_Pressure(SoftDemo* pdemo)
 				if(rand() < 0.3f*RAND_MAX)
 				{
 					btScalar mass = 10.0f;
-					btScalar height = 1.0f;
+					btScalar height = 0.75f;
 					btScalar width = 7.5;
 
 					btTransform startTransform;
 					startTransform.setIdentity();
 					startTransform.setOrigin(btVector3(cityXOffset + 15*i + width, height / 2, cityYOffset + 15*j + width));
-					float sizeX = 2.0f;
-					float sizeZ = 3.0f;
-					if(rand() < RAND_MAX/2)
-					{
-						float temp=sizeX;
-						sizeX=sizeZ;
-						sizeZ=temp;
-					}
+					float sizeX = 3.0f;
+					float sizeZ = 1.5f;
+
+					btQuaternion rotation;
+					rotation.setRotation(btVector3(0, 1, 0), 2 * M_PI * float(rand()) / RAND_MAX);
+					startTransform.setRotation(rotation);
+
 					btRigidBody*	pCar	= pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(sizeX, height, sizeZ)));
 					pdemo->m_cars.push_back(pCar);
 				}
