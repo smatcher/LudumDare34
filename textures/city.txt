@@ -2,8 +2,11 @@ textures/city_straight.tga
 textures/city_cross.tga
 textures/city_turn.tga
 textures/city_double_turn.tga
-# 3 3
-3b 1b 3a
-1a 2a 1a
-3c 1b 3d
+textures/city_roof.tga
+# 5 5
+3b 1b 4c 1b 3a
+1a 5a 1a 5a 1a
+4d 1b 2a 1b 4b
+1a 5a 1a 5a 1a
+3c 1b 4a 1b 3d
 
