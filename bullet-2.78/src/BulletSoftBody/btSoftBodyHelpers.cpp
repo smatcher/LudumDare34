@@ -355,9 +355,9 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 		glTexGenfv(GL_T,GL_OBJECT_PLANE,planez);
 		glTexGeni(GL_S,GL_TEXTURE_GEN_MODE,GL_OBJECT_LINEAR);
 		glTexGeni(GL_T,GL_TEXTURE_GEN_MODE,GL_OBJECT_LINEAR);
-		glEnable(GL_TEXTURE_GEN_S);
-		glEnable(GL_TEXTURE_GEN_T);
-		glEnable(GL_TEXTURE_GEN_R);
+		glDisable(GL_TEXTURE_GEN_S);
+		glDisable(GL_TEXTURE_GEN_T);
+		glDisable(GL_TEXTURE_GEN_R);
 
 		glEnable(GL_COLOR_MATERIAL);
 		
@@ -418,14 +418,14 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 				glColor4f(color.getX(), color.getY(), color.getZ(), alpha);
 				glNormal3d(n.getX(), n.getY(), n.getZ());
 
-				static float gfScale = 10.0f;
-				glTexCoord2f(gfScale * (pos0.getX() - vCenter.getX()), gfScale * (pos0.getZ() - vCenter.getZ()));
+				static float gfScale = 1.0f;
+				glTexCoord2f(gfScale * (pos0.getX() + vCenter.getX()), gfScale * (pos0.getZ() + vCenter.getZ()));
 				glVertex3d(pos0.getX(), pos0.getY(), pos0.getZ());
 
-				glTexCoord2f(gfScale * (pos1.getX() - vCenter.getX()), gfScale * (pos1.getZ() - vCenter.getZ()));
+				glTexCoord2f(gfScale * (pos1.getX() + vCenter.getX()), gfScale * (pos1.getZ() + vCenter.getZ()));
 				glVertex3d(pos1.getX(), pos1.getY(), pos1.getZ());
 
-				glTexCoord2f(gfScale * (pos2.getX() - vCenter.getX()), gfScale * (pos2.getZ() - vCenter.getZ()));
+				glTexCoord2f(gfScale * (pos2.getX() + vCenter.getX()), gfScale * (pos2.getZ() + vCenter.getZ()));
 				glVertex3d(pos2.getX(), pos2.getY(), pos2.getZ());
 				glEnd();
 			}
@@ -455,14 +455,14 @@ void			btSoftBodyHelpers::Draw(	btSoftBody* psb,
 				glColor4f(color.getX(), color.getY(), color.getZ(),alpha);
 				glNormal3d(n.getX(),n.getY(),n.getZ());
 
-				static float gfScale = 10.0f;
-				glTexCoord2f( gfScale * (pos0.getX()-vCenter.getX()), gfScale * (pos0.getZ()-vCenter.getZ()));
+				static float gfScale = 4.0f;
+				glTexCoord2f( gfScale * (pos0.getX()-1.5*vCenter.getX()), gfScale * (pos0.getZ()-1.5*vCenter.getZ()));
 				glVertex3d(pos0.getX(),pos0.getY(),pos0.getZ());
 
-				glTexCoord2f( gfScale * (pos1.getX()-vCenter.getX()), gfScale * (pos1.getZ()-vCenter.getZ()));
+				glTexCoord2f( gfScale * (pos1.getX()-1.5*vCenter.getX()), gfScale * (pos1.getZ()-1.5*vCenter.getZ()));
 				glVertex3d(pos1.getX(),pos1.getY(),pos1.getZ());
 
-				glTexCoord2f( gfScale * (pos2.getX()-vCenter.getX()), gfScale * (pos2.getZ()-vCenter.getZ()));
+				glTexCoord2f( gfScale * (pos2.getX()-1.5*vCenter.getX()), gfScale * (pos2.getZ()-1.5*vCenter.getZ()));
 				glVertex3d(pos2.getX(),pos2.getY(),pos2.getZ());
 				glEnd();
 			}
