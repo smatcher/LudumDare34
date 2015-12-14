@@ -174,6 +174,8 @@ static void	Init_Pressure(SoftDemo* pdemo)
 		pdemo->m_city_tileset.loadFromFile("textures/city.txt");
 
 
+	srand(42);
+
 	for (int i = 0; i < pdemo->m_city_tileset.width(); i++)
 	{
 		for (int j = 0; j < pdemo->m_city_tileset.height(); j++)
@@ -188,6 +190,28 @@ static void	Init_Pressure(SoftDemo* pdemo)
 				startTransform.setIdentity();
 				startTransform.setOrigin(btVector3(cityXOffset + 15*i + width, height / 2, cityYOffset + 15*j + width));
 				btRigidBody*		body = pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(width, height, width)));
+			}
+			else
+			{
+				if(rand() < 0.3f*RAND_MAX)
+				{
+					btScalar mass = 10.0f;
+					btScalar height = 1.0f;
+					btScalar width = 7.5;
+
+					btTransform startTransform;
+					startTransform.setIdentity();
+					startTransform.setOrigin(btVector3(cityXOffset + 15*i + width, height / 2, cityYOffset + 15*j + width));
+					float sizeX = 2.0f;
+					float sizeZ = 3.0f;
+					if(rand() < RAND_MAX/2)
+					{
+						float temp=sizeX;
+						sizeX=sizeZ;
+						sizeZ=temp;
+					}
+					pdemo->m_cars.push_back(pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(sizeX, height, sizeZ))));
+				}
 			}
 		}
 	}
@@ -289,7 +313,6 @@ void	SoftDemo::clientResetScene()
 	Init_Pressure(this);
 }
 
-
 void SoftDemo::clientMoveAndDisplay()
 {
 	m_azi = 180.0f * atan2(m_direction.getX(), m_direction.getZ()) / M_PI;
@@ -343,6 +366,14 @@ void SoftDemo::clientMoveAndDisplay()
 
 		//optional but useful: debug drawing
 
+
+		// TEST COLLISION
+		//if(m_test_car->checkCollideWith(m_tartiflette))
+		//{
+		//	static int debug=0;
+		//	debug++;
+		//	printf("COLLISION ! %d\n",debug);
+		//}
 	}
 
 

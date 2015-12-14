@@ -79,6 +79,7 @@ public:
 	bool								m_right = false;
 	btSoftBody*							m_tartiflette;
 	TileSet								m_city_tileset;
+	std::vector<btRigidBody*>			m_cars;
 
 	//keep the collision shapes, for deletion/cleanup
 	btAlignedObjectArray<btCollisionShape*>		m_collisionShapes;
