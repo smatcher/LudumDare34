@@ -577,7 +577,46 @@ void GL_ShapeDrawer::drawOpenGL(btScalar* m, const btCollisionShape* shape, cons
 		}
 
 
-		glColor3f(1.0f, 1.0f, 1.0f);
+		if (isCar) {
+			char hex = 0xDC;
+			hex = hex ^ (int(shape) & 0xff);
+			hex = hex ^ (int(shape) >> 2 & 0xff);
+			hex = hex ^ (int(shape) >> 4 & 0xff);
+			hex = hex ^ (int(shape) >> 6 & 0xff);
+			hex = hex ^ (int(shape) >> 8 & 0xff);
+
+			float sat = 0.8;
+			float value = 0.6;
+			int hue = 360.0f * float(hex) / 255;
+			float c = value*sat;
+			float x = c*(1 - abs((hue / 60) % 2 - 1));
+			float m = value - c;
+			float r, g, b;
+			switch (hue / 60) {
+			case 0:
+				r = c; g = x; b = 0;
+				break;
+			case 1:
+				r = x; g = c; b = 0;
+				break;
+			case 2:
+				r = 0; g = c; b = x;
+				break;
+			case 3:
+				r = 0; g = x; b = c;
+				break;
+			case 4:
+				r = x; g = 0; b = c;
+				break;
+			default:
+				r = c; g = 0; b = x;
+				break;
+			}
+			glColor3f(r+m, g+m, b+m);
+		}
+		else {
+			glColor3f(1.0f, 1.0f, 1.0f);
+		}
 		//glColor3f(color.x(),color.y(), color.z());		
 
 		bool useWireframeFallback = true;
