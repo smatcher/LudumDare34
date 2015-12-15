@@ -396,7 +396,7 @@ void SoftDemo::clientMoveAndDisplay()
 			{
 				printf("MIAM!\n");
 				m_dynamicsWorld->removeRigidBody(m_cars[i]);
-				m_tartifletteVC *= 0.8f;
+				m_tartifletteVC *= 0.5f;
 				m_cars.erase(m_cars.begin() + i);
 			}
 		}
