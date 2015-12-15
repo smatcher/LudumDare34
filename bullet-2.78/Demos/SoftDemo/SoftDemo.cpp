@@ -155,13 +155,13 @@ static void Ctor_LinearStair(SoftDemo* pdemo,const btVector3& org,const btVector
 //
 static void	Init_Pressure(SoftDemo* pdemo)
 {
-	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(0,5,0),
+	btSoftBody*	psb=btSoftBodyHelpers::CreateEllipsoid(pdemo->m_softBodyWorldInfo,btVector3(0,10,10),
 		btVector3(1,1,1)*6,
 		512);
 	psb->m_materials[0]->m_kLST	=	0.1;
 	psb->m_cfg.kDF				=	1;
 	psb->m_cfg.kDP				=	0.001; // fun factor...
-	psb->m_cfg.kPR				=	2500;
+	psb->m_cfg.kPR				=	pdemo->m_tartiflettePR	 = 100;
 	psb->setTotalMass(30,true);
 	pdemo->getSoftDynamicsWorld()->addSoftBody(psb);
 	
@@ -359,6 +359,7 @@ void SoftDemo::clientMoveAndDisplay()
 		m_tartiflette->addForce(forceScale * m_direction + jumpScale * btVector3(0,1,0));
 
 		m_tartiflette->m_cfg.kVC = m_tartifletteVC;
+		m_tartiflette->m_cfg.kPR = m_tartiflettePR;
 
 		// Make cars go away from us
 		for(int i=0 ; i < m_cars.size() ; i++)
@@ -399,8 +400,10 @@ void SoftDemo::clientMoveAndDisplay()
 			if(dist < gfMinDistToEatCars)
 			{
 				printf("MIAM!\n");
+				gfMinDistToEatCars += 1.2f;
 				m_dynamicsWorld->removeRigidBody(m_cars[i]);
 				m_tartifletteVC *= 0.5f;
+				m_tartiflettePR += 1200.0f;
 				m_cars.erase(m_cars.begin() + i);
 			}
 		}
