@@ -83,6 +83,7 @@ public:
 	TileSet								m_city_tileset;
 	std::vector<btRigidBody*>			m_cars;
 	std::vector<btRigidBody*>			m_buildings;
+	int									m_nbEatenCars;
 
 	//keep the collision shapes, for deletion/cleanup
 	btAlignedObjectArray<btCollisionShape*>		m_collisionShapes;

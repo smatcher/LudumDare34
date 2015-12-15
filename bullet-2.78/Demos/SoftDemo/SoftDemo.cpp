@@ -192,6 +192,7 @@ static void	Init_Pressure(SoftDemo* pdemo)
 				startTransform.setIdentity();
 				startTransform.setOrigin(btVector3(cityXOffset + 15*i + width, height / 2, cityYOffset + 15*j + width));
 				btRigidBody*		body = pdemo->localCreateRigidBody(mass, startTransform, new btBoxShape(btVector3(width, height, width)));
+				pdemo->m_buildings.push_back(body);
 			}
 			else
 			{
@@ -218,6 +219,8 @@ static void	Init_Pressure(SoftDemo* pdemo)
 			}
 		}
 	}
+
+	pdemo->m_nbEatenCars	= 0;
 }
 
 
@@ -405,6 +408,27 @@ void SoftDemo::clientMoveAndDisplay()
 				m_tartifletteVC *= 0.5f;
 				m_tartiflettePR += 1200.0f;
 				m_cars.erase(m_cars.begin() + i);
+				m_nbEatenCars++;
+			}
+		}
+
+		// Eat buildings!
+		if(m_nbEatenCars > 10)
+		{
+			static float gfDistMinToEatBuildings = 15.0f;
+			for(int i=m_buildings.size()-1 ; i >= 0 ; i--)
+			{
+				const btVector3	vBuildingPos = m_buildings[i]->getWorldTransform().getOrigin();
+				float dist = (vBuildingPos-gTartifletteCenter).length();
+				if(dist < gfDistMinToEatBuildings)
+				{
+					printf("MIAM BUILDING!\n");
+					gfMinDistToEatCars += 1.2f;
+					m_dynamicsWorld->removeRigidBody(m_buildings[i]);
+					m_tartifletteVC *= 0.5f;
+					m_tartiflettePR += 1200.0f;
+					m_buildings.erase(m_buildings.begin() + i);
+				}
 			}
 		}
 	}
