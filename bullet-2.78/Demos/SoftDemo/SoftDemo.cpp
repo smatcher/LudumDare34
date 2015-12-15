@@ -361,19 +361,21 @@ void SoftDemo::clientMoveAndDisplay()
 		m_tartiflette->m_cfg.kVC = m_tartifletteVC;
 
 		// Make cars go away from us
-		//for(int i=0 ; i < m_cars.size() ; i++)
-		//{
-		//	const btVector3	vCarPos = m_cars[i]->getWorldTransform().getOrigin();
-		//	btVector3	vTartifletteToCar	= vCarPos-gTartifletteCenter;
-		//	vTartifletteToCar.safeNormalize();
-		//
-		//	btQuaternion	targetOrientation;
-		//	targetOrientation.setRotation(btVector3(0.0f, 1.0f, 0.0f), atan2(vTartifletteToCar.getY(), vTartifletteToCar.getX()));
-		//
-		//	btTransform	transform	= m_cars[i]->getWorldTransform();
-		//	transform.setRotation(targetOrientation);
-		//	m_cars[i]->setWorldTransform(transform);
-		//}
+		for(int i=0 ; i < m_cars.size() ; i++)
+		{
+			const btVector3	vCarPos = m_cars[i]->getWorldTransform().getOrigin();
+			btVector3	vTartifletteToCar	= vCarPos-gTartifletteCenter;
+			vTartifletteToCar.safeNormalize();
+		
+			//btQuaternion	targetOrientation;
+			//targetOrientation.setRotation(btVector3(0.0f, 1.0f, 0.0f), atan2(vTartifletteToCar.getY(), vTartifletteToCar.getX()));
+			//
+			//btTransform	transform	= m_cars[i]->getWorldTransform();
+			//transform.setRotation(targetOrientation);
+			//m_cars[i]->setWorldTransform(transform);
+			static float gfForceScale= 100.0f;
+			m_cars[i]->applyCentralForce(vTartifletteToCar*gfForceScale);
+		}
 
 		int numSimSteps;
 		numSimSteps = m_dynamicsWorld->stepSimulation(dt);
